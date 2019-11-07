@@ -17,7 +17,13 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    Adapter.getShows().then(shows => this.setState({shows}))
+    fetch("http://api.tvmaze.com/shows")
+    .then(res => res.json())
+    .then(data => {
+      this.setState({
+        shows: data
+      })
+    })
   }
 
   componentDidUpdate = () => {
@@ -34,7 +40,7 @@ class App extends Component {
 
   selectShow = (show) => {
     Adapter.getShowEpisodes(show.id)
-    .then((episodes) => this.setState({
+    .then(episodes => this.setState({
       selectedShow: show,
       episodes
     }))
@@ -51,6 +57,7 @@ class App extends Component {
   }
 
   render (){
+    console.log(this.state)
     return (
       <div>
         <Nav handleFilter={this.handleFilter} handleSearch={this.handleSearch} searchTerm={this.state.searchTerm}/>
